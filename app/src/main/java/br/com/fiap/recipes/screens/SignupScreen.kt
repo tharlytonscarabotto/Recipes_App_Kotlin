@@ -32,11 +32,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
-fun SignupScreen(modifier: Modifier = Modifier) {
+fun SignupScreen(navController: NavController) {
     Box(
         modifier = Modifier
             .fillMaxSize().background(MaterialTheme.colorScheme.background)
@@ -67,7 +69,7 @@ fun SignupScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun SignupScreenPreview() {
     RecipesTheme {
-        SignupScreen()
+        SignupScreen(rememberNavController())
     }
 
 }

@@ -27,17 +27,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
+import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -57,7 +60,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LoginTitle()
-            LoginForm()
+            LoginForm(navController)
         }
     }
 }
@@ -66,7 +69,7 @@ fun LoginScreen(modifier: Modifier = Modifier) {
 @Composable
 private fun LoginScreenPreview() {
     RecipesTheme {
-        LoginScreen()
+        LoginScreen(rememberNavController())
     }
 }
 
@@ -100,7 +103,7 @@ private fun LoginTitlePreview() {
 }
 
 @Composable
-fun LoginForm(modifier: Modifier = Modifier) {
+fun LoginForm(navController: NavController) {
     Column {
         OutlinedTextField(
             value = "",
@@ -195,7 +198,12 @@ fun LoginForm(modifier: Modifier = Modifier) {
                 color = MaterialTheme.colorScheme.primary
             )
             TextButton(
-                onClick = {}
+                onClick = {
+                    navController
+                        .navigate(
+                            Destination.SignupScreen.route
+                        )
+                }
             ) {
                 Text(
                     text = stringResource(R.string.sign_up),
@@ -211,6 +219,6 @@ fun LoginForm(modifier: Modifier = Modifier) {
 @Composable
 private fun LoginFormPreview() {
     RecipesTheme {
-        LoginForm()
+        LoginForm(rememberNavController())
     }
 }
