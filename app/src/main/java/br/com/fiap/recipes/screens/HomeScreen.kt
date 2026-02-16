@@ -18,9 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -55,13 +53,13 @@ import br.com.fiap.recipes.ui.theme.RecipesTheme
 import br.com.fiap.recipes.R
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, email: String?) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
     ) {
         Scaffold(
-            topBar = { MyTopAppBar() },
+            topBar = { MyTopAppBar(email!!) },
             bottomBar = { MyBottomAppBar() },
             floatingActionButton = {
                 FloatingActionButton(
@@ -85,13 +83,13 @@ fun HomeScreen(navController: NavController) {
 @Composable
 private fun HomeScreenPreview() {
     RecipesTheme {
-        HomeScreen(rememberNavController())
+        HomeScreen(rememberNavController(), "")
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTopAppBar(modifier: Modifier = Modifier) {
+fun MyTopAppBar(email: String) {
     TopAppBar(
         modifier = Modifier
             .fillMaxWidth(),
@@ -111,7 +109,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier) {
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "joao@email.com",
+                        text = email,
                         style = MaterialTheme.typography.displaySmall
                     )
                 }
@@ -142,7 +140,7 @@ fun MyTopAppBar(modifier: Modifier = Modifier) {
 @Composable
 private fun MyTopAppBarPreview() {
     RecipesTheme {
-        MyTopAppBar()
+        MyTopAppBar("")
     }
 }
 

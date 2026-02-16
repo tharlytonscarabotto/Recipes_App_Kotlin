@@ -24,6 +24,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -104,10 +106,21 @@ private fun LoginTitlePreview() {
 
 @Composable
 fun LoginForm(navController: NavController) {
+
+    var email = remember{
+        mutableStateOf("")
+    }
+
+    var password = remember{
+        mutableStateOf("")
+    }
+
     Column {
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email.value,
+            onValueChange = { emailValue ->
+                email.value = emailValue
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
@@ -137,8 +150,10 @@ fun LoginForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(6.dp))
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password.value,
+            onValueChange = { passwordValue ->
+                password.value = passwordValue
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(4.dp),
@@ -175,7 +190,12 @@ fun LoginForm(navController: NavController) {
         )
         Spacer(modifier = Modifier.height(32.dp))
         Button(
-            onClick = {},
+            onClick = {
+                navController
+                    .navigate(
+                        Destination.HomeScreen.createRoute(email.value)
+                    )
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
