@@ -22,6 +22,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Deep Link-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="recipes.fiap.com.br"
+                    android:scheme="https"
+                    android:pathPrefix="/email" />
+            </intent-filter>
         </activity>
     </application>
 
