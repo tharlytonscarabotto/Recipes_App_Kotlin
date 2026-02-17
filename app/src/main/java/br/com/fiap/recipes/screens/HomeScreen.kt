@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -55,7 +56,9 @@ import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.components.CategoryItem
+import br.com.fiap.recipes.components.RecipeItem
 import br.com.fiap.recipes.repository.getAllCategories
+import br.com.fiap.recipes.repository.getAllRecipes
 
 @Composable
 fun HomeScreen(navController: NavController, email: String?) {
@@ -202,6 +205,7 @@ private fun MyBottomAppBarPreview() {
 fun ContentScreen(modifier: Modifier = Modifier) {
 
     val categories = getAllCategories()
+    val recipes = getAllRecipes()
 
     Column(
         modifier = modifier
@@ -267,7 +271,6 @@ fun ContentScreen(modifier: Modifier = Modifier) {
                 CategoryItem(category)
             }
         }
-
         Text(
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -275,6 +278,17 @@ fun ContentScreen(modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.labelMedium,
             color = MaterialTheme.colorScheme.primary
         )
+        LazyColumn(
+            contentPadding = PaddingValues(
+                vertical = 8.dp,
+                horizontal = 16.dp
+            ),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(recipes){ recipe ->
+                RecipeItem(recipe)
+            }
+        }
     }
 }
 
