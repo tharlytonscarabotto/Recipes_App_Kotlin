@@ -13,4 +13,10 @@ sealed class Destination(val route: String){
 
     object LoginScreen: Destination("login")
 
+    object RecipeCategoryScreen: Destination("category/{categoryId}"){
+        fun createRoute(categoryId: Int): String{
+            return "category/$categoryId"
+        }
+    }
+
 }

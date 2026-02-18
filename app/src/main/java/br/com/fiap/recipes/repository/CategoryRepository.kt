@@ -48,3 +48,8 @@ fun getAllCategories() = listOf<Category>(
         background = Color(0xFF80DEEA)
     )
 )
+
+fun getCategoryById(id: Int) = getAllCategories()
+    .find { category ->
+        category.id == id
+    }

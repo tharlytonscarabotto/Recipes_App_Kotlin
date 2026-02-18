@@ -56,3 +56,8 @@ fun getAllRecipes() = listOf<Recipe>(
         image = R.drawable.feijoada
     )
 )
+
+fun getRecipesByCategory(id: Int) = getAllRecipes()
+    .filter { recipe ->
+        recipe.category.id == id
+    }
