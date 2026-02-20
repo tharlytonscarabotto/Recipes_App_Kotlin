@@ -26,6 +26,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -36,6 +38,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.ui.theme.RecipesTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import br.com.fiap.recipes.model.User
+import br.com.fiap.recipes.repository.SharedPreferenciesUserRepository
 
 @Composable
 fun SignupScreen(navController: NavController) {
@@ -139,15 +146,33 @@ private fun UserImagePreview() {
 
 @Composable
 fun SignupUserForm(modifier: Modifier = Modifier) {
+
+    //Variaveis de estado para controlar os valores exibidos nos OutlinedTextFields
+    var name by remember {
+        mutableStateOf("")
+    }
+
+    var email by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
+
+    //Criação de uma instancia do SharedPreferencesUserRepository
+    val userRepository = SharedPreferenciesUserRepository(context = LocalContext.current)
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(32.dp)
     ) {
-        //Caixa de texto do nome do usuário
-        OutlinedTextField(
-            value = "",
-            onValueChange = {},
+       OutlinedTextField(
+            value = name,
+            onValueChange = {
+                name = it
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             label = {
@@ -170,11 +195,11 @@ fun SignupUserForm(modifier: Modifier = Modifier) {
                 )
             }
         )
-
-        //Caixa de texto do nome do email
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = email,
+            onValueChange = {
+                email = it
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             label = {
@@ -199,8 +224,10 @@ fun SignupUserForm(modifier: Modifier = Modifier) {
         )
         //Caixa de texto da senha
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = password,
+            onValueChange = {
+                password = it
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             label = {
@@ -232,7 +259,15 @@ fun SignupUserForm(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(32.dp))
         Button(
-            onClick = {},
+            onClick = {
+                userRepository.saveUser(
+                    User(
+                        name = name,
+                        email = email,
+                        password = password
+                    )
+                )
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
