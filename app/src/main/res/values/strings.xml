@@ -25,4 +25,5 @@
     <string name="categories">Categories</string>
     <string name="newly_added_recipes">Newly added recipes</string>
     <string name="name_must_have_at_least_3_characters">Name must have at least 3 characters</string>
+    <string name="authentication_error">Authentication error</string>
 </resources>
