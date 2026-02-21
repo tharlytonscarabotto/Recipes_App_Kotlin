@@ -1,9 +1,20 @@
 package br.com.fiap.recipes.screens
 
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.util.Patterns
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
@@ -20,7 +32,6 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PhotoCamera
-import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -44,6 +55,8 @@ import br.com.fiap.recipes.R
 import br.com.fiap.recipes.ui.theme.RecipesTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import br.com.fiap.recipes.model.User
@@ -52,6 +65,37 @@ import br.com.fiap.recipes.repository.SharedPreferenciesUserRepository
 
 @Composable
 fun SignupScreen(navController: NavController) {
+
+    val context = LocalContext.current
+
+    //Variavel que armazena a imagem padrao do usuario
+    val placeholderImage = BitmapFactory
+        .decodeResource(
+            Resources.getSystem(),
+            android.R.drawable.ic_menu_gallery
+        )
+
+    //Armazenar a imagem de  profile do usuario em uma variavel BitMap
+    var profileImage by remember {
+        mutableStateOf<Bitmap>(placeholderImage)
+    }
+
+    //Criar um lancador de atividade para buscar imagem da galeria
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()){ uri ->
+        if(Build.VERSION.SDK_INT < 28){
+            profileImage = MediaStore.Images.Media.getBitmap(context.contentResolver, uri)
+        } else {
+            if(uri != null){
+                val source = ImageDecoder
+                    .createSource(context.contentResolver, uri)
+                profileImage = ImageDecoder.decodeBitmap(source)
+            } else{
+                profileImage = placeholderImage
+            }
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -69,8 +113,8 @@ fun SignupScreen(navController: NavController) {
         ) {
             TitleComponent()
             Spacer(modifier = Modifier.height(48.dp))
-            UserImage()
-            SignupUserForm(navController)
+            UserImage(profileImage, launcher)
+            SignupUserForm(navController, profileImage)
         }
 
     }
@@ -119,15 +163,16 @@ private fun TitleComponentPreview() {
 }
 
 @Composable
-fun UserImage(modifier: Modifier = Modifier) {
+fun UserImage(profileImage: Bitmap, launcher: ManagedActivityResultLauncher<String, Uri?>) {
     Box(
         modifier = Modifier
             .size(120.dp)
     ){
         Image(
-            painter = painterResource(R.drawable.user),
+            bitmap = profileImage.asImageBitmap(),
             contentDescription = stringResource(R.string.user_image),
             modifier = Modifier
+                .clip(shape = CircleShape)
                 .size(110.dp)
                 .align(alignment = Alignment.Center)
         )
@@ -137,6 +182,11 @@ fun UserImage(modifier: Modifier = Modifier) {
             tint = MaterialTheme.colorScheme.primary,
             modifier = Modifier
                 .align(alignment = Alignment.BottomEnd)
+                .clickable(
+                    onClick = {
+                        launcher.launch("image/*")
+                    }
+                )
         )
     }
 }
@@ -147,12 +197,12 @@ fun UserImage(modifier: Modifier = Modifier) {
 @Composable
 private fun UserImagePreview() {
     RecipesTheme {
-        UserImage()
+        //UserImage(profileImage, launcher)
     }
 }
 
 @Composable
-fun SignupUserForm(navController: NavController) {
+fun SignupUserForm(navController: NavController, profileImage: Bitmap) {
 
     //Variaveis de estado para controlar os valores exibidos nos OutlinedTextFields
     var name by remember {
@@ -416,6 +466,6 @@ fun SignupUserForm(navController: NavController) {
 @Composable
 private fun SignupUserFormPreview() {
     RecipesTheme {
-        SignupUserForm(rememberNavController())
+        //SignupUserForm(rememberNavController(), profileImage)
     }
 }
