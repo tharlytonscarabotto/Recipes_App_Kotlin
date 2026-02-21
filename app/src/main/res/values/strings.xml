@@ -26,4 +26,10 @@
     <string name="newly_added_recipes">Newly added recipes</string>
     <string name="name_must_have_at_least_3_characters">Name must have at least 3 characters</string>
     <string name="authentication_error">Authentication error</string>
+    <string name="profile">Profile</string>
+    <string name="user_profile_details">User profile details</string>
+    <string name="update_profile">Update profile</string>
+    <string name="user_removal">User removal</string>
+    <string name="are_you_sure_you_want_to_delete_this_account">Are you sure you want to delete this account?</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -49,6 +49,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.com.fiap.recipes.R
 import br.com.fiap.recipes.navigation.Destination
+import br.com.fiap.recipes.repository.RoomUserRepository
 import br.com.fiap.recipes.repository.SharedPreferenciesUserRepository
 import br.com.fiap.recipes.repository.UserRepository
 import br.com.fiap.recipes.ui.theme.RecipesTheme
@@ -136,7 +137,7 @@ fun LoginForm(navController: NavController) {
     }
 
     //Instancia da classe SharedPreferenciesUserRepository
-    val userRepository: UserRepository = SharedPreferenciesUserRepository(LocalContext.current)
+    val userRepository: UserRepository = RoomUserRepository(LocalContext.current)
 
     Column {
         OutlinedTextField(
