@@ -61,7 +61,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import br.com.fiap.recipes.model.User
 import br.com.fiap.recipes.navigation.Destination
+import br.com.fiap.recipes.repository.RoomUserRepository
 import br.com.fiap.recipes.repository.SharedPreferenciesUserRepository
+import br.com.fiap.recipes.utils.convertBitmapToByteArray
 
 @Composable
 fun SignupScreen(navController: NavController) {
@@ -235,7 +237,8 @@ fun SignupUserForm(navController: NavController, profileImage: Bitmap) {
     }
 
     //Criação de uma instancia do SharedPreferencesUserRepository
-    val userRepository = SharedPreferenciesUserRepository(context = LocalContext.current)
+    //val userRepository = SharedPreferenciesUserRepository(context = LocalContext.current)
+    val userRepository = RoomUserRepository(context = LocalContext.current)
 
     Column(
         modifier = Modifier
@@ -393,7 +396,8 @@ fun SignupUserForm(navController: NavController, profileImage: Bitmap) {
                         User(
                             name = name,
                             email = email,
-                            password = password
+                            password = password,
+                            userImage = convertBitmapToByteArray(profileImage)
                         )
                     )
                     showDialogSuccess = true
