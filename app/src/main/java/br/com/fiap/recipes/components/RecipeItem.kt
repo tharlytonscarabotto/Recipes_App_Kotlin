@@ -27,12 +27,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.fiap.recipes.factory.RetrofitClient
 import br.com.fiap.recipes.model.Recipe
 import br.com.fiap.recipes.repository.getAllRecipes
 import br.com.fiap.recipes.ui.theme.RecipesTheme
+import coil.compose.AsyncImage
 
 @Composable
 fun RecipeItem(recipe: Recipe) {
+
+    val baseurl = RetrofitClient.BASE_URL.plus("recipes")
 
     Card(
         modifier = Modifier
@@ -43,8 +47,8 @@ fun RecipeItem(recipe: Recipe) {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            Image(
-                painter = painterResource(recipe.image!!),
+            AsyncImage(
+                model = baseurl.plus(recipe.image),
                 contentDescription = "",
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
@@ -62,7 +66,7 @@ fun RecipeItem(recipe: Recipe) {
                     )
             ) {
                 Text(
-                    text = recipe.user.name,
+                    text = "User name",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.padding(top = 8.dp, start = 8.dp)

@@ -68,7 +68,7 @@ import br.com.fiap.recipes.navigation.Destination
 import br.com.fiap.recipes.repository.RoomUserRepository
 import br.com.fiap.recipes.repository.UserRepository
 import br.com.fiap.recipes.repository.getAllCategories
-import br.com.fiap.recipes.repository.getAllRecipes
+import br.com.fiap.recipes.repository.getLatestRecipes
 import br.com.fiap.recipes.utils.convertByteArraytoBitmap
 
 @Composable
@@ -242,7 +242,7 @@ fun ContentScreen(
 ) {
 
     val categories = getAllCategories()
-    val recipes = getAllRecipes()
+    val latestRecipes = getLatestRecipes()
 
     Column(
         modifier = modifier
@@ -328,7 +328,7 @@ fun ContentScreen(
             ),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(recipes){ recipe ->
+            items(latestRecipes){ recipe ->
                 RecipeItem(recipe)
             }
         }
