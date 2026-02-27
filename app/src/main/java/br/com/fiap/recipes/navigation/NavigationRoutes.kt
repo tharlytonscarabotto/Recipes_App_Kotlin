@@ -8,6 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import br.com.fiap.recipes.screens.AddPreparationMethodsScreen
+import br.com.fiap.recipes.screens.AddRecipeIngredientsScreen
+import br.com.fiap.recipes.screens.AddRecipePhotoScreen
+import br.com.fiap.recipes.screens.AddRecipeScreen
 import br.com.fiap.recipes.screens.CategoryRecipeScreen
 import br.com.fiap.recipes.screens.HomeScreen
 import br.com.fiap.recipes.screens.InitialScreen
@@ -73,5 +77,65 @@ fun NavigationRoutes() {
             val categoryId = it.arguments?.getInt("categoryId")
             CategoryRecipeScreen(categoryId)
         }
+
+        composable(
+            route = Destination.AddRecipeScreen.route
+        ) {
+            AddRecipeScreen(navController)
+        }
+
+        composable(
+            route = Destination.AddRecipeIngredientsScreen.route,
+            arguments = listOf(
+                navArgument(
+                    name = "recipeId"
+                ){ type = NavType.IntType},
+                navArgument(
+                    name = "recipeName"
+                ){type = NavType.StringType}
+            )
+        ){backStackEntry ->
+            var recipeId = backStackEntry.arguments?.getInt("recipeId")
+            var recipeName = backStackEntry.arguments?.getString("recipeName")
+            AddRecipeIngredientsScreen(
+                navController,
+                recipeId,
+                recipeName
+            )
+        }
+
+        composable(
+            route = Destination.AddPreparationMethodsScreen.route,
+            arguments = listOf(
+                navArgument(
+                    name = "recipeId"
+                ){ type = NavType.IntType},
+                navArgument(
+                    name = "recipeName"
+                ){type = NavType.StringType}
+            )
+        ){backStackEntry ->
+            var recipeId = backStackEntry.arguments?.getInt("recipeId")
+            var recipeName = backStackEntry.arguments?.getString("recipeName")
+            AddPreparationMethodsScreen(
+                navController,
+                recipeId,
+                recipeName
+            )
+        }
+
+        composable(
+            route = Destination.AddRecipePhotoScreen.route,
+            arguments = listOf(
+                navArgument(
+                    name = "recipeId"
+                ){type = NavType.IntType},
+            )
+        ){backStackEntry ->
+            var recipeId = backStackEntry.arguments?.getInt("recipeId")
+            AddRecipePhotoScreen(recipeId!!, navController)
+        }
+
+
     }
 }

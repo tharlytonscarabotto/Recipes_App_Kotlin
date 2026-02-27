@@ -24,4 +24,37 @@ sealed class Destination(val route: String){
         }
     }
 
+    object AddRecipeScreen: Destination("AddRecipeScreen")
+
+    object AddRecipeIngredientsScreen : Destination(
+        route = "addIngredients/{recipeId}/{recipeName}"
+    ){
+        fun createRoute(
+            recipeId: Int,
+            recipeName: String
+        ): String {
+            return "addIngredients/$recipeId/$recipeName"
+        }
+    }
+
+    object AddPreparationMethodsScreen : Destination(
+        route = "addPreparationMethods/{recipeId}/{recipeName}"
+    ){
+        fun createRoute(
+            recipeId: Int,
+            recipeName: String
+        ): String {
+            return "addPreparationMethods/$recipeId/$recipeName"
+        }
+    }
+
+    object AddRecipePhotoScreen : Destination(
+        route = "AddRecipePhotoScreen/{recipeId}"
+    ){
+        fun createRoute(
+            recipeId: Int
+        ): String {
+            return "AddRecipePhotoScreen/$recipeId"
+        }
+    }
 }

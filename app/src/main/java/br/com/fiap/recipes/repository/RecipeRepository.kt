@@ -9,11 +9,17 @@ import br.com.fiap.recipes.R
 import br.com.fiap.recipes.factory.RetrofitClient
 import br.com.fiap.recipes.model.Category
 import br.com.fiap.recipes.model.DifficultyLevel
+import br.com.fiap.recipes.model.Ingredient
+import br.com.fiap.recipes.model.PreparationMethod
 import br.com.fiap.recipes.model.Recipe
+import br.com.fiap.recipes.model.RecipeRequest
 import br.com.fiap.recipes.model.User
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.time.LocalDate
 
 fun getAllRecipes() = listOf<Recipe>(
@@ -119,7 +125,52 @@ fun getLatestRecipes(): List<Recipe> {
     })
     return latestRecipes
 }
-//fun getRecipesByCategory(id: Int) = getAllRecipes()
-//    .filter { recipe ->
-//        recipe.category.id == id
-//    }
+
+suspend fun saveRecipe(recipeRequest: RecipeRequest): RecipeRequest{
+
+    val newRecipe = RetrofitClient.getRecipeService().saveRecipe(recipeRequest)
+    return newRecipe
+
+}
+
+suspend fun saveRecipeIngredients(
+    recipeId: Int,
+    ingredients: List<Ingredient>
+): List<Ingredient>{
+    val newIngredients = RetrofitClient
+        .getRecipeService()
+        .saveRecipeIngredients(
+            recipeId = recipeId,
+            ingredients = ingredients
+        )
+    return newIngredients
+}
+
+suspend fun savePreparationMethods(
+    recipeId: Int,
+    preparationMethods: List<PreparationMethod>
+): List<PreparationMethod>{
+    val newPreparationMethods = RetrofitClient
+        .getRecipeService()
+        .savePreparationMethods(
+            recipeId = recipeId,
+            preparationMethods = preparationMethods
+        )
+    return newPreparationMethods
+}
+
+suspend fun uploadImage(recipeId: Int, file: File){
+    val image = MultipartBody.Part
+        .createFormData(
+            name = "file",
+            filename = file.name,
+            body = file.asRequestBody()
+        )
+    RetrofitClient.getRecipeService().uploadImgae(recipeId, image)
+}
+
+
+
+
+
+

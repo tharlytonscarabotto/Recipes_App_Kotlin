@@ -1,5 +1,6 @@
 package br.com.fiap.recipes.screens
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -82,7 +83,9 @@ fun HomeScreen(navController: NavController, email: String?) {
             bottomBar = { MyBottomAppBar() },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = {},
+                    onClick = {
+                        navController.navigate(Destination.AddRecipeScreen.route)
+                    },
                     shape = CircleShape,
                     containerColor = MaterialTheme.colorScheme.primary
                 ) {
@@ -116,7 +119,12 @@ fun MyTopAppBar(email: String = "", navController: NavController) {
     val userRepository: UserRepository =
         RoomUserRepository(LocalContext.current)
 
-    val user = userRepository.getUserByEmail(email)
+    val sharedPreferences = LocalContext.current
+        .getSharedPreferences("user_data", Context.MODE_PRIVATE)
+
+    val emailSharedPreferences = sharedPreferences.getString("email", "")
+
+    val user = userRepository.getUserByEmail(emailSharedPreferences!!)
 
     val profileBitmap by remember {
         mutableStateOf<Bitmap>(

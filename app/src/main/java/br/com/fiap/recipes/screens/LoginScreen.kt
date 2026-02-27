@@ -1,5 +1,6 @@
 package br.com.fiap.recipes.screens
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,7 @@ import br.com.fiap.recipes.repository.RoomUserRepository
 import br.com.fiap.recipes.repository.SharedPreferenciesUserRepository
 import br.com.fiap.recipes.repository.UserRepository
 import br.com.fiap.recipes.ui.theme.RecipesTheme
+import kotlinx.serialization.Contextual
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -119,6 +121,8 @@ private fun LoginTitlePreview() {
 
 @Composable
 fun LoginForm(navController: NavController) {
+
+    val context = LocalContext.current
 
     var email by remember{
         mutableStateOf("")
@@ -231,6 +235,12 @@ fun LoginForm(navController: NavController) {
             onClick = {
                 val authenticate = userRepository.login(email, password)
                 if (authenticate) {
+                    val sharedPreferences = context
+                        .getSharedPreferences("user_data", Context.MODE_PRIVATE)
+                    sharedPreferences.edit()
+                        .putString("email", email)
+                        .apply()
+
                     navController
                         .navigate(
                             Destination.HomeScreen.createRoute(email)
